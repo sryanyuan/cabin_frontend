@@ -6,6 +6,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
 import router from './router'
 
+import 'font-awesome/css/font-awesome.css'
+import '@/assets/css/main.css'
+import '@/assets/css/media.css'
+
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
