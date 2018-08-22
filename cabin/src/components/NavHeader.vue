@@ -1,13 +1,13 @@
 <template lang="html">
 <header id="header">
   <h1>
-    <a href="/">GoCode</a>
+    <router-link :to="{path: '/'}">GoCode</router-link>
   </h1>
   <nav class="links">
     <ul>
-      <li><a href="/#/blog">主页</a></li>
-      <li><a href="/#/categories">目录</a></li>
-      <li><a href="/#/about">关于</a></li>
+      <li>
+        <router-link :to="{name: 'about'}">关于</router-link>
+      </li>
     </ul>
   </nav>
   <nav class="main">

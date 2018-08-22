@@ -10,7 +10,7 @@
                 <li v-for="item in iconLinks" :key="item.id"><a :href="item.link" target="_blank" :title="item.title" :class="item.faIcon"/></li>
             </ul>
         </section>
-        <section id="recent-posts">
+        <!--section id="recent-posts">
             <ul class="posts">
                 <header>
                     <h3>最近的随笔</h3>
@@ -22,20 +22,25 @@
                     </li>
                 </ul>
             </ul>
-        </section>
+        </section-->
         <section id="categories">
             <ul class="posts">
                 <header>
-                    <h3><a href="/#/categories">分一下类</a></h3>
+                    <h3>
+                        <!--a href="/#/categories">分一下类</a-->
+                        分一下类
+                    </h3>
                 </header>
-                <sidebar-category-item v-for="cate in categories.Categories" :url="cate.url" :name="cate.name" :count="cate.count" :key="cate.id" />
+                <sidebar-category-item v-for="cate in categories" :categoryId="cate.id" :name="cate.name" :count="cate.count" :key="cate.id" />
             </ul>
         </section>
         <section class="blurb">
             <h2>关于</h2>
             <p>留一丝思绪于永恒.</p>
             <ul class="actions">
-                <li><a href="/#/about" class="button">了解更多</a></li>
+                <li>
+                    <router-link :to="{name: 'about'}" class="button">了解更多</router-link>
+                </li>
             </ul>
         </section>
         <section id="footer">
@@ -50,16 +55,11 @@ import SidebarCategoryItem from "@/components/sidebarCategoryItem.vue"
 export default {
     data: function() {
         return {
-            recentPosts: {Posts: [
+            /*recentPosts: {Posts: [
                 {id: 0, title: "今天是个好天气", url: "Loading", pubDatetime: "1999-09-09 09:09:09"},
                 {id: 1, title: "测试一下子", url: "Loading", pubDatetime: "1999-09-09 09:09:09"}
-            ]},
-            categories: {
-                Categories: [
-                    {id: 0, name: "生活点滴", url: "/#/category?cat=1", count: 3},
-                    {id: 1, name: "技术", url: "/#/category?cat=2", count: 3}
-                ]
-            },
+            ]},*/
+            categories: [],
             iconLinks: [
                 {
                     id: 0,
@@ -80,6 +80,17 @@ export default {
     components: {
         SidebarRecentPostItem,
         SidebarCategoryItem
+    },
+    created: function() {
+        let self = this
+        this.$axios.get("/api/category")
+        .then(function (response) {
+            let body = JSON.parse(response.data.message)
+            self.categories = body.categories
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
     }
 }
 </script>

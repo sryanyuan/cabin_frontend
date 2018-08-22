@@ -2,13 +2,13 @@
     <li>
         <article>
             <header>
-                <a :href="url">{{name}}</a>
+                <!--a :href="url">{{name}}</a-->
+                <router-link :to="{name: 'category', params: {id: categoryId}}">{{name}}</router-link>
                 <span style="float:right;">{{count}}</span>
             </header>
         </article>
     </li>
 </template>
-
 
 <script>
 export default {
@@ -17,7 +17,7 @@ export default {
 
         }
     },
-    props: ["url", "name", "count"]
+    props: ["name", "count", "categoryId"]
 }
 </script>
 
