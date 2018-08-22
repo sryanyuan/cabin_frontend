@@ -3,7 +3,7 @@
     <nav-header>Header</nav-header>
     <div id="main">
       <article-container v-for="article in articles" :summary="summary" :key="article.id" :articleId="article.articleId"></article-container>
-      <pagination :next="showNext" :previous="showPrev" :page="curPage"></pagination>
+      <pagination v-show="loaded" @gonext="gonext" @goprev="goprev" :category="category" :next="showNext" :previous="showPrev" :page="curPage"></pagination>
     </div>
     <sidebar logoimg="../static/my.png"></sidebar>
   </div>
@@ -25,6 +25,8 @@ export default {
   },
   data: function() {
     return {
+      loaded: false,
+      category: 0,
       articles: [],
       summary: true,
       curPage: 0,
@@ -52,24 +54,35 @@ export default {
       return this.curPage + 1;
     }
   },
-  created: function() {
-    this.curPage = this.$route.query.page;
-    if (null == this.curPage) {
-      this.curPage = 0;
-    } else {
-      // Convert to string
-      this.curPage = parseInt(this.curPage);
-    }
-    console.log("page", this.$route.query.page);
+  methods: {
+    gonext() {
+      if (this.curPage + 1 >= this.totalPage) {
+        return
+      }
+      this.curPage++;
+      this.pullArticles()
+    },
+    goprev() {
+      if (this.curPage - 1 < 0) {
+        return
+      }
+      this.curPage--;
+      this.pullArticles()
+    },
+    pullArticles() {
+      this.loaded = false;
     let self = this;
     this.$axios
       .get(
         "/api/article?mode=2&category=" +
-          this.$route.params.id +
+          this.category +
           "&limit=5&page=" +
           this.curPage
       )
       .then(function(response) {
+        if (self.articles.length != 0) {
+          self.articles = []
+        }
         let body = JSON.parse(response.data.message);
         for (let item of body.articles) {
           self.articles.push({
@@ -78,10 +91,25 @@ export default {
           });
         }
         self.totalPage = body.pages;
+        window.scrollTo(0, 0)
+        self.loaded = true
       })
       .catch(function(error) {
         console.log(error);
       });
+    }
+  },
+  created: function() {
+    this.category = this.$route.params.id
+    this.curPage = this.$route.query.page;
+    if (null == this.curPage) {
+      this.curPage = 0;
+    } else {
+      // Convert to string
+      this.curPage = parseInt(this.curPage);
+    }
+    console.log("page", this.$route.query.page);
+    this.pullArticles();
   }
 };
 </script>

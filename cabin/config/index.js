@@ -11,7 +11,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api': "http://localhost:1111/"
+      '/api': "http://gocode.cc/"
     },
 
     // Various Dev Server settings

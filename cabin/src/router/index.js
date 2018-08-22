@@ -14,22 +14,26 @@ export default new Router({
     {
       path: '/',
       name: 'Index',
-      component: Index
+      component: Index,
+      meta: {scrollToTop: true}
     },
     {
       name: "article",
       path: "/article/:id",
-      component: Article
+      component: Article,
+      meta: {scrollToTop: true}
     },
     {
       path: "/about",
       name: "about",
-      component: About
+      component: About,
+      meta: {scrollToTop: true}
     },
     {
       path: "/category/:id",
       name: "category",
-      component: Category
+      component: Category,
+      meta: {scrollToTop: true}
     }
   ]
 })

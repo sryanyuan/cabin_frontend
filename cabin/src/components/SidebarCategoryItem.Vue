@@ -4,6 +4,7 @@
             <header>
                 <!--a :href="url">{{name}}</a-->
                 <router-link :to="{name: 'category', params: {id: categoryId}}">{{name}}</router-link>
+                <!--router-link :to="{path: `/category/${categoryId}`}">{{name}}</router-link-->
                 <span style="float:right;">{{count}}</span>
             </header>
         </article>
