@@ -4,12 +4,14 @@
     <div id="main">
       <article-container :summary="summary" :key="articleId" :articleId="articleId"></article-container>
     </div>
+    <sidebar logoimg="../static/my.png"></sidebar>
   </div>
 </template>
 
 <script>
 import ArticleContainer from "@/components/ArticleContainer.vue"
 import NavHeader from "@/components/NavHeader.vue"
+import Sidebar from "@/components/Sidebar.vue"
 export default {
     data: function() {
         return {
@@ -19,7 +21,8 @@ export default {
     },
     components: {
         ArticleContainer,
-        NavHeader
+        NavHeader,
+        Sidebar
     }
 }
 </script>

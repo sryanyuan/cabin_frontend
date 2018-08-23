@@ -29,7 +29,7 @@ export default {
       category: 0,
       articles: [],
       summary: true,
-      curPage: 0,
+      curPage: null,
       totalPage: 0
     };
   },
@@ -97,19 +97,39 @@ export default {
       .catch(function(error) {
         console.log(error);
       });
+    },
+    onPageCreated() {
+      // First initialized
+      if (0 == this.category) {
+        this.category = this.$route.params.id
+      }
+      this.curPage = this.$route.query.page;
+      if (null == this.curPage) {
+        this.curPage = 0;
+      } else {
+        // Convert to int
+        this.curPage = parseInt(this.curPage);
+      }
+      console.log("Category", this.category, "turn to page", this.curPage);
+      this.pullArticles()
     }
   },
   created: function() {
-    this.category = this.$route.params.id
-    this.curPage = this.$route.query.page;
-    if (null == this.curPage) {
-      this.curPage = 0;
-    } else {
-      // Convert to string
-      this.curPage = parseInt(this.curPage);
+    this.onPageCreated()
+  },
+  watch: {
+    '$route' (to, from) {
+      console.log(to, from)
+      if (to.name != "category" ||
+      from.name != "category") {
+        return
+      }
+      // Get category id
+      let toID = to.params.id
+      // Recreate the category page
+      this.category = toID
+      this.onPageCreated()
     }
-    console.log("page", this.$route.query.page);
-    this.pullArticles();
   }
 };
 </script>
