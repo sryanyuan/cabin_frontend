@@ -1,12 +1,15 @@
 <template lang="html">
 <header id="header">
-  <h1>
+  <h2>
     <router-link :to="{path: '/'}">GoCode</router-link>
-  </h1>
+  </h2>
   <nav class="links">
     <ul>
       <li>
-        <router-link :to="{name: 'about'}">关于</router-link>
+        <router-link :to="{name: 'blogIndex'}">博客</router-link>
+      </li>
+      <li>
+        <router-link :to="{name: 'blogAbout'}">关于</router-link>
       </li>
     </ul>
   </nav>
@@ -65,7 +68,7 @@ export default {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 10000;
+  z-index: 1;
 }
 
 #header .main {
@@ -102,7 +105,7 @@ export default {
   line-height: 56px;
 }
 
-#header h1 {
+#header h2 {
   height: 56px;
   line-height: 56px;
   padding-left: 24px;
@@ -118,7 +121,7 @@ export default {
   font-size: 16px;
 }
 
-#header h1 a, #header li a {
+#header h2 a, #header li a {
   font-size: 12px;
   border-bottom: 0;
   text-decoration: none;

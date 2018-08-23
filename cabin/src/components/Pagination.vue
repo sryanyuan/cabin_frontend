@@ -1,12 +1,10 @@
 <template>
     <ul class="actions pagination">
         <li>
-            <!--router-link @click="goprev" :to="{name: 'category', query: {page: prevPage}}" :class="buttonClsPrev">上一页</router-link-->
-            <a :href="prevURL" @click="goprev" :class="buttonClsPrev">上一页</a>
+            <router-link :to="{name: 'blogCategory', query: {page: prevPage}}" :class="buttonClsPrev">上一页</router-link>
         </li>
         <li>
-            <!--router-link @click="gonext" :to="{name: 'category', query: {page: nextPage}}" :class="buttonClsNext">下一页</router-link-->
-            <a :href="nextURL" @click="gonext" :class="buttonClsNext">下一页</a>
+            <router-link :to="{name: 'blogCategory', query: {page: nextPage}}" :class="buttonClsNext">下一页</router-link>
         </li>
     </ul>
 </template>
@@ -39,14 +37,6 @@ export default {
                 disabled: this.disableNextPage()
             }
             return res
-        },
-        prevURL: function() {
-            let pg = this.page - 1 < 0 ? 0 : this.page - 1
-            return "/#/category/" + this.category + "?page=" + pg
-        },
-        nextURL: function() {
-            let pg = this.page + 1
-            return "/#/category/" + this.category + "?page=" + pg
         }
     },
     created: function() {
@@ -58,12 +48,6 @@ export default {
         },
         disableNextPage: function() {
             return !this.next
-        },
-        goprev: function () {
-            this.$emit("goprev");
-        },
-        gonext: function() {
-            this.$emit("gonext")
         }
     },
     props: ["previous", "next", "category", "page"]
@@ -74,7 +58,9 @@ export default {
 ul.actions {
     display: flex;
     list-style: none;
-    margin-left: -1em;
+    margin-left: 0;
+    justify-content: flex-start;
+    padding-left: 0;
 }
 
 ul.actions>li a {
@@ -82,7 +68,7 @@ ul.actions>li a {
 }
 
 ul.actions>li:first-child {
-    margin-right: 5px;
+    margin-right: 18px;
 }
 
 .button.disabled {

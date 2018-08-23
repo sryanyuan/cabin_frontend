@@ -1,5 +1,5 @@
 <template>
-    <article class="post">
+    <article class="post" v-loading="loading">
         <div id="postbody" v-html="content" v-highlight>
         </div>
         <footer v-if="editable">
@@ -14,9 +14,12 @@
 </template>
 
 <script>
+import {formatError} from '@/assets/js/util.js'
+
 export default {
   data: function() {
     return {
+        loading: true,
         title: "",
         url: "",
         datetime: "1970-01-01 00:00:00",
@@ -32,18 +35,19 @@ export default {
   created: function() {
       this.like = 0
       this.comments = 0
-      this.category = ""
-      this.categoryUrl = "/#/category"
       this.content = ""
+      this.loading = true
     // Pull config from api
     let self = this;
     this.$axios.get("/api/about")
     .then(function (response) {
         let body = JSON.parse(response.data.message);
         self.content = body.resume;
+        self.loading = false
     })
     .catch(function (error) {
-        console.log(error)
+        self.$message.warning(formatError(error))
+        self.loading = false
     })
   }
 };

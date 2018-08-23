@@ -2,9 +2,7 @@
     <li>
         <article>
             <header>
-                <!--a :href="url">{{name}}</a-->
-                <router-link :to="{name: 'category', params: {id: categoryId}, query: {page: 0}}">{{name}}</router-link>
-                <!--router-link :to="{path: `/category/${categoryId}`}">{{name}}</router-link-->
+                <router-link :to="{name: 'blogCategory', params: {id: categoryId}, query: {page: 0}}">{{name}}</router-link>
                 <span style="float:right;">{{count}}</span>
             </header>
         </article>

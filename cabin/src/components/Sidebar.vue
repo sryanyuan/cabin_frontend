@@ -39,7 +39,7 @@
             <p>留一丝思绪于永恒.</p>
             <ul class="actions">
                 <li>
-                    <router-link :to="{name: 'about'}" class="button">了解更多</router-link>
+                    <router-link :to="{name: 'blogAbout'}" class="button">了解更多</router-link>
                 </li>
             </ul>
         </section>
@@ -52,13 +52,11 @@
 <script>
 import SidebarRecentPostItem from "@/components/sidebarRecentPostItem.vue"
 import SidebarCategoryItem from "@/components/sidebarCategoryItem.vue"
+import {formatError} from '@/assets/js/util.js'
+
 export default {
     data: function() {
         return {
-            /*recentPosts: {Posts: [
-                {id: 0, title: "今天是个好天气", url: "Loading", pubDatetime: "1999-09-09 09:09:09"},
-                {id: 1, title: "测试一下子", url: "Loading", pubDatetime: "1999-09-09 09:09:09"}
-            ]},*/
             categories: [],
             iconLinks: [
                 {
@@ -81,16 +79,21 @@ export default {
         SidebarRecentPostItem,
         SidebarCategoryItem
     },
+    methods: {
+        pullCategories() {
+            let self = this
+            this.$axios.get("/api/category")
+            .then(function (response) {
+                let body = JSON.parse(response.data.message)
+                self.categories = body.categories
+            })
+            .catch(function (error) {
+                self.$message.warning(formatError(error))
+            })
+        }
+    },
     created: function() {
-        let self = this
-        this.$axios.get("/api/category")
-        .then(function (response) {
-            let body = JSON.parse(response.data.message)
-            self.categories = body.categories
-        })
-        .catch(function (error) {
-            console.log(error)
-        })
+        this.pullCategories()
     }
 }
 </script>

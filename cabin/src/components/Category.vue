@@ -1,25 +1,17 @@
 <template>
-  <div id="wrapper">
-    <nav-header>Header</nav-header>
     <div id="main">
       <article-container v-for="article in articles" :summary="summary" :key="article.id" :articleId="article.articleId"></article-container>
-      <pagination v-show="loaded" @gonext="gonext" @goprev="goprev" :category="category" :next="showNext" :previous="showPrev" :page="curPage"></pagination>
+      <pagination v-show="loaded" :category="category" :next="showNext" :previous="showPrev" :page="curPage"></pagination>
     </div>
-    <sidebar logoimg="../static/my.png"></sidebar>
-  </div>
 </template>
 
 <script>
-import NavHeader from "@/components/NavHeader.vue";
-import Sidebar from "@/components/Sidebar.vue";
 import ArticleContainer from "@/components/ArticleContainer.vue";
 import Pagination from '@/components/Pagination.vue'
+import {formatError} from '@/assets/js/util.js'
 
 export default {
-  name: "Category",
   components: {
-    NavHeader,
-    Sidebar,
     ArticleContainer,
     Pagination
   },
@@ -55,20 +47,6 @@ export default {
     }
   },
   methods: {
-    gonext() {
-      if (this.curPage + 1 >= this.totalPage) {
-        return
-      }
-      this.curPage++;
-      this.pullArticles()
-    },
-    goprev() {
-      if (this.curPage - 1 < 0) {
-        return
-      }
-      this.curPage--;
-      this.pullArticles()
-    },
     pullArticles() {
       this.loaded = false;
     let self = this;
@@ -95,7 +73,7 @@ export default {
         self.loaded = true
       })
       .catch(function(error) {
-        console.log(error);
+        self.$message.warning(formatError(error))
       });
     },
     onPageCreated() {
@@ -120,8 +98,8 @@ export default {
   watch: {
     '$route' (to, from) {
       console.log(to, from)
-      if (to.name != "category" ||
-      from.name != "category") {
+      if (to.name != "blogCategory" ||
+      from.name != "blogCategory") {
         return
       }
       // Get category id

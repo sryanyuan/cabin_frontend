@@ -2,31 +2,31 @@
   <div id="wrapper">
     <nav-header>Header</nav-header>
     <div id="main">
-      <about-container></about-container>
+      <router-view></router-view>
     </div>
     <sidebar logoimg="../static/my.png"></sidebar>
   </div>
 </template>
 
 <script>
-import AboutContainer from "@/components/AboutContainer.vue"
 import NavHeader from "@/components/NavHeader.vue"
 import Sidebar from "@/components/Sidebar.vue"
+import ArticleContainer from "@/components/ArticleContainer.vue"
 export default {
-    data: function() {
-        return {
-            articleId: this.$route.params.id,
-            summary: false
-        }
-    },
+    name: "Index",
     components: {
-        AboutContainer,
         NavHeader,
-        Sidebar
+        Sidebar,
+        ArticleContainer
+    },
+    data: function() {
+      return {
+      }
+    },
+    created: function() {
     }
 }
 </script>
 
 <style scoped>
-
 </style>
