@@ -73,7 +73,7 @@ export default {
         "/api/article/" +
         this.articleId +
         "?summary=" +
-        (this.summary ? "1" : "0");
+        (this.summary ? "10" : "100000");
       let self = this;
       this.$axios
         .get(url)

@@ -1,7 +1,7 @@
 <template>
     <section id="sidebar">
         <section id="intro">
-            <img :src="logoimg" class="intro-circle" />
+            <img :src="logoImg" class="intro-circle" />
             <header>
                 <h2>Gocode</h2>
                 <p>一处思绪驿站 <i class="fa fa-hand-peace-o"></i></p>
@@ -57,6 +57,7 @@ import {formatError} from '@/assets/js/util.js'
 export default {
     data: function() {
         return {
+            logoImg: "static/image/my.png",
             categories: [],
             iconLinks: [
                 {
@@ -74,7 +75,6 @@ export default {
             ]
         }
     },
-    props: ["logoimg"],
     components: {
         SidebarRecentPostItem,
         SidebarCategoryItem

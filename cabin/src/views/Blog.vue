@@ -4,7 +4,7 @@
     <div id="main">
       <router-view></router-view>
     </div>
-    <sidebar logoimg="../static/my.png"></sidebar>
+    <sidebar></sidebar>
   </div>
 </template>
 
