@@ -15,6 +15,10 @@ module.exports = {
   entry: {
     app: './src/main.js'
   },
+  externals: {
+    'axios': 'axios',
+    'highlight.js': 'highlight.js'
+  },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',

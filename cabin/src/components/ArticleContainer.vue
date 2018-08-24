@@ -73,7 +73,7 @@ export default {
         "/api/article/" +
         this.articleId +
         "?summary=" +
-        (this.summary ? "10" : "100000");
+        (this.summary ? "10" : "0");
       let self = this;
       this.$axios
         .get(url)
@@ -188,7 +188,7 @@ header .meta .published {
 
 #postbody {
   text-align: left;
-  font-family: "YaHei Consolas Hybrid", Consolas, "Meiryo UI";
+  font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
   font-size: 14px;
 }
 
