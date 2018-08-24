@@ -6,7 +6,7 @@
             </a>
         </div>
         <div id="reply-input">
-            <el-input v-model="input" placeholder="请输入内容"></el-input>
+            <el-input v-model="input" :placeholder="getPlaceholder"></el-input>
             <span class="reply-block-button">回复</span>
         </div>
     </div>
@@ -16,9 +16,22 @@
 export default {
     data: function() {
         return {
-            input: ""
+            input: "",
+            placeholder: "请输入内容"
         }
-    }
+    },
+    computed: {
+        getPlaceholder() {
+            if (null == this.toWho) {
+                return "请输入内容"
+            }
+            return "回复 " + this.toWho.name + ":"
+        }
+    },
+    methods: {
+        
+    },
+    props: ['toWho']
 }
 </script>
 

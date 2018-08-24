@@ -20,9 +20,9 @@
             <span class="reply-time">{{reply.time}}</span>
         </div>
         <div v-show="expand" id="sub-replys">
-            <comment-sub-item v-for="(item, index) in reply.subs" :reply=item :key="item.id" :floorIndex="index"></comment-sub-item>
+            <comment-sub-item v-for="(item, index) in reply.subs" :reply=item :key="item.id" @replyTo="replyComment" :floorIndex="index"></comment-sub-item>
             <div id="reply-wrapper">
-                <reply-container></reply-container>
+                <reply-container :toWho="toWho"></reply-container>
             </div>
         </div>
     </div>
@@ -36,9 +36,10 @@ export default {
     data: function() {
         return {
             replys: [
-
+                
             ],
-            expand: false
+            expand: false,
+            toWho: null
         }
     },
     components: {
@@ -51,6 +52,10 @@ export default {
         },
         doExpand: function() {
             this.expand = !this.expand
+            this.toWho = null
+        },
+        replyComment: function(toUid, toName) {
+            this.toWho = {uid: toUid, name: toName}
         }
     },
     computed: {

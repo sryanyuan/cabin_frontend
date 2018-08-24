@@ -21,7 +21,7 @@
             </div>
         </div>
         <div id="reply-actions">
-            <span class="sub-to-reply">回复</span>
+            <span class="sub-to-reply" @click="doReply">回复</span>
             <span class="reply-time">{{reply.time}}</span>
         </div>
     </div>
@@ -43,6 +43,11 @@ export default {
                 return false
             }
             return this.reply.toUid != 0
+        }
+    },
+    methods: {
+        doReply: function() {
+            this.$emit('replyTo', this.reply.uid, this.reply.name)
         }
     },
     props: ["reply", "floorIndex"]
