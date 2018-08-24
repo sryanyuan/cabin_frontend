@@ -1,5 +1,6 @@
 <template>
     <div>
+        <reply-container></reply-container>
         <div id="comment-count"><h3>{{replyCount}} 条评论</h3></div>
         <comment-item v-for="item in replys" :reply="item" :key="item.id"></comment-item>
     </div>
@@ -7,6 +8,7 @@
 
 <script>
 import CommentItem from '@/components/CommentItem.vue'
+import ReplyContainer from '@/components/ReplyContainer.vue'
 
 export default {
     data: function() {
@@ -31,7 +33,7 @@ export default {
                             toUser: ""
                         },
                         {
-                            id: 0,
+                            id: 1,
                             uid: 2,
                             name: "qee",
                             content: "我们拥有对父作用域属性的完全访问权限",
@@ -45,7 +47,8 @@ export default {
         }
     },
     components: {
-        CommentItem
+        CommentItem,
+        ReplyContainer
     },
     computed: {
         replyCount: function() {

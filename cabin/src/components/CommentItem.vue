@@ -21,12 +21,16 @@
         </div>
         <div v-show="expand" id="sub-replys">
             <comment-sub-item v-for="(item, index) in reply.subs" :reply=item :key="item.id" :floorIndex="index"></comment-sub-item>
+            <div id="reply-wrapper">
+                <reply-container></reply-container>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 import CommentSubItem from '@/components/CommentSubItem.vue'
+import ReplyContainer from '@/components/ReplyContainer.vue'
 
 export default {
     data: function() {
@@ -38,7 +42,8 @@ export default {
         }
     },
     components: {
-        CommentSubItem
+        CommentSubItem,
+        ReplyContainer
     },
     methods: {
         onAgree: function() {
@@ -79,6 +84,10 @@ export default {
 </script>
 
 <style scoped>
+#reply-wrapper {
+    margin-left: 78px;
+}
+
 #sub-replys {
     margin-top: 20px;
 }
@@ -115,11 +124,13 @@ export default {
 
 .sub-expand:hover {
     color: black;
+    transition: all .5s;
 }
 
 .reply-block-button:hover {
     color: black;
     border: 1px solid black;
+    transition: all .5s;
 }
 
 #comment-item {
