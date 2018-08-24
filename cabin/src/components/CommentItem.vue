@@ -125,6 +125,7 @@ export default {
 #comment-item {
     padding: 24px 25px;
     font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+    border-bottom: 1px solid #d9dde1;
 }
 
 #reply-main {
