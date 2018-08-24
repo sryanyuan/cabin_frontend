@@ -1,22 +1,22 @@
 <template>
-  <div id="wrapper">
-    <nav-header>Header</nav-header>
-    <div id="main">
+  <el-container id="wrapper">
+    <nx-nav-header>Header</nx-nav-header>
+    <el-main id="main">
       <router-view></router-view>
-    </div>
-    <sidebar></sidebar>
-  </div>
+    </el-main>
+    <nx-sidebar></nx-sidebar>
+  </el-container>
 </template>
 
 <script>
-import NavHeader from "@/components/NavHeader.vue"
-import Sidebar from "@/components/Sidebar.vue"
+import NxNavHeader from "@/components/nx/NavHeader.vue"
+import NxSidebar from "@/components/nx/Sidebar.vue"
 import ArticleContainer from "@/components/ArticleContainer.vue"
 export default {
     name: "Index",
     components: {
-        NavHeader,
-        Sidebar,
+        NxNavHeader,
+        NxSidebar,
         ArticleContainer,
     },
     data: function() {

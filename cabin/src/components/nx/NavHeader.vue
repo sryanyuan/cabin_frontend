@@ -1,5 +1,5 @@
 <template lang="html">
-<header id="header">
+<!--header id="header">
   <h2>
     <router-link :to="{path: '/'}">GoCode</router-link>
   </h2>
@@ -18,7 +18,14 @@
       <li><a href="/#/login">登陆</a></li>
     </ul>
   </nav>
-</header>
+</header-->
+<el-header>
+  <el-menu mode="horizontal">
+    <h2>
+      <router-link :to="{path: '/'}">GoCode</router-link>
+    </h2>
+  </el-menu>
+</el-header>
 </template>
 
 <script>

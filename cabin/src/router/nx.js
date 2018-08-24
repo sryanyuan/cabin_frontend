@@ -1,16 +1,12 @@
-/*import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 
 // First version
-const Blog = resolve => require(['@/views/Blog'], resolve)
+const Blog = resolve => require(['@/views/nx/Blog'], resolve)
 // Blog child router components
 const BlogSummary = resolve => require(['@/components/Summary'], resolve)
 const BlogArticle = resolve => require(['@/components/Article'], resolve)
 const BlogAbout = resolve => require(['@/components/About'], resolve)
 const BlogCategory = resolve => require(['@/components/Category'], resolve)
-
-Vue.use(Router)
 
 export default new Router({
   routes: [
@@ -45,13 +41,3 @@ export default new Router({
     }
   ]
 })
-*/
-
-import Vue from 'vue'
-import Router from 'vue-router'
-Vue.use(Router)
-
-import router from '@/router/default.js'
-//import router from '@/router/nx.js'
-
-export default router

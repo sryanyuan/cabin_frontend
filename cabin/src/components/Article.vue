@@ -1,9 +1,14 @@
 <template>
-    <article-container :summary="summary" :key="articleId" :articleId="articleId"></article-container>
+    <div>
+        <article-container :summary="summary" :key="articleId" :articleId="articleId"></article-container>
+        <comments></comments>
+    </div>
 </template>
 
 <script>
 import ArticleContainer from "@/components/ArticleContainer.vue"
+import Comments from '@/components/Comments.vue'
+
 export default {
     data: function() {
         return {
@@ -12,7 +17,8 @@ export default {
         }
     },
     components: {
-        ArticleContainer
+        ArticleContainer,
+        Comments
     },
     created() {
         window.scrollTo(0, 0)
