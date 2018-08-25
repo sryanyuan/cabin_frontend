@@ -39,7 +39,7 @@ export default {
                 
             ],
             expand: false,
-            toWho: null
+            toWho: {uid: this.reply.uid, name: this.reply.name}
         }
     },
     components: {
@@ -52,7 +52,7 @@ export default {
         },
         doExpand: function() {
             this.expand = !this.expand
-            this.toWho = null
+            this.toWho = {uid: this.reply.uid, name: this.reply.name}
         },
         replyComment: function(toUid, toName) {
             this.toWho = {uid: toUid, name: toName}

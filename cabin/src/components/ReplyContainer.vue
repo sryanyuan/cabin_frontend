@@ -7,7 +7,7 @@
         </div>
         <div id="reply-input">
             <el-input v-model="input" :placeholder="getPlaceholder"></el-input>
-            <span class="reply-block-button">回复</span>
+            <span class="reply-block-button" @click="commitReply">回复</span>
         </div>
     </div>
 </template>
@@ -17,22 +17,28 @@ export default {
     data: function() {
         return {
             input: "",
-            placeholder: "请输入内容"
-        }
+            placeholder: "请输入内容",
+            tipShow: false,
+            tipType: 0
+        };
     },
     computed: {
         getPlaceholder() {
             if (null == this.toWho) {
-                return "请输入内容"
+                return "请输入内容";
             }
-            return "回复 " + this.toWho.name + ":"
+            return "回复 " + this.toWho.name + ":";
         }
     },
     methods: {
-        
+        commitReply() {
+            if (null == this.toWho) {
+                this.$message.warning("请选择回复人");
+            }
+        }
     },
-    props: ['toWho']
-}
+    props: ["toWho"]
+};
 </script>
 
 <style scoped>
@@ -48,13 +54,13 @@ export default {
     color: #93999f;
     box-sizing: border-box;
     cursor: pointer;
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-family: "Avenir", Helvetica, Arial, sans-serif;
     margin-left: 24px;
     text-align: center;
 }
 
 .reply-block-button:hover {
-    transition: all .5s;
+    transition: all 0.5s;
     color: black;
     border: 1px solid black;
 }

@@ -7,6 +7,8 @@
 <script>
 import ArticleContainer from "@/components/ArticleContainer.vue"
 import {formatError} from '@/assets/js/util.js'
+import api from '@/assets/js/api.js'
+
 export default {
     name: "Summary",
     components: {
@@ -23,19 +25,13 @@ export default {
       pullArticleSummarys: function() {
         let self = this
         self.articles = []
-        this.$axios.get("/api/article?mode=0&limit=5")
-        .then(function (response) {
-          let body = JSON.parse(response.data.message)
-          for (let item of body.articles) {
-            self.articles.push({
-              id: item.articleId,
-              articleId: item.articleId
-            })
+        api.getArticleIdsSummary(function(res) {
+          if (res.success) {
+            self.articles = res.res.articles;
+          } else {
+            self.$message.warning(res.error)
           }
-        })
-        .catch(function (error) {
-          self.$message.warning(formatError(error))
-        })
+        }, 0, 5)
       }
     },
     created: function() {

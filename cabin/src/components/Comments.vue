@@ -1,6 +1,6 @@
 <template>
     <div>
-        <reply-container></reply-container>
+        <reply-container :toWho="toWho"></reply-container>
         <div id="comment-count"><h3>{{replyCount}} 条评论</h3></div>
         <comment-item v-for="item in replys" :reply="item" :key="item.id"></comment-item>
     </div>
@@ -55,7 +55,7 @@ export default {
             return this.replys.length
         }
     },
-    props: ["uri"]
+    props: ["uri", "toWho"]
 }
 </script>
 

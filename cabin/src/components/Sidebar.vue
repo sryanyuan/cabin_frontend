@@ -53,6 +53,7 @@
 import SidebarRecentPostItem from "@/components/sidebarRecentPostItem.vue"
 import SidebarCategoryItem from "@/components/sidebarCategoryItem.vue"
 import {formatError} from '@/assets/js/util.js'
+import api from '@/assets/js/api.js'
 
 export default {
     data: function() {
@@ -82,13 +83,12 @@ export default {
     methods: {
         pullCategories() {
             let self = this
-            this.$axios.get("/api/category")
-            .then(function (response) {
-                let body = JSON.parse(response.data.message)
-                self.categories = body.categories
-            })
-            .catch(function (error) {
-                self.$message.warning(formatError(error))
+            api.getCategoryList(function(response) {
+                if (response.success) {
+                    self.categories = response.res
+                } else {
+                    self.$message.warning(response.error)
+                }
             })
         }
     },

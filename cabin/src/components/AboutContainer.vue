@@ -2,139 +2,122 @@
     <article class="post" v-loading="loading">
         <div id="postbody" v-html="content" v-highlight>
         </div>
-        <footer v-if="editable">
-            <ul class="stats">
-                <li><a href="#" class="icon fa fa-heart">{{like}}</a></li>
-                <li><a href="#" class="icon fa fa-comment">{{comments}}</a></li>
-            </ul>
-        </footer>
-        <footer v-else>
-        </footer>
     </article>
 </template>
 
 <script>
-import {formatError} from '@/assets/js/util.js'
+import api from '@/assets/js/api.js'
 
 export default {
-  data: function() {
-    return {
-        loading: true,
-        title: "",
-        url: "",
-        datetime: "1970-01-01 00:00:00",
-        content: ""
-    };
-  },
-  props: ["editable"],
-  computed: {
-      getArticleURL: function() {
-          return "/#/article/" + this.articleId
-      }
-  },
-  created: function() {
-      this.like = 0
-      this.comments = 0
-      this.content = ""
-      this.loading = true
-    // Pull config from api
-    let self = this;
-    this.$axios.get("/api/about")
-    .then(function (response) {
-        let body = JSON.parse(response.data.message);
-        self.content = body.resume;
-        self.loading = false
-    })
-    .catch(function (error) {
-        self.$message.warning(formatError(error))
-        self.loading = false
-    })
-  }
+    data: function () {
+        return {
+            loading: true,
+            content: ""
+        };
+    },
+    props: [],
+    computed: {
+        
+    },
+    created: function () {
+        this.content = ""
+        this.loading = true
+        // Pull config from api
+        let self = this;
+
+        api.getAbout(function(res) {
+            self.loading = false
+            if (res.success) {
+                self.content = res.res.resume
+            } else {
+                self.$message.warning(res.error)
+            }
+        })
+    }
 };
 </script>
 
 <style scoped>
 .post {
-    margin: 0 0 2em;
-    padding: 3em 3em 1em;
-    position: relative;
-    background: #fff;
-    border: 1px solid rgba(160, 160, 160, .3);
+  margin: 0 0 2em;
+  padding: 3em 3em 1em;
+  position: relative;
+  background: #fff;
+  border: 1px solid rgba(160, 160, 160, 0.3);
 }
 
 a {
-    text-decoration: none;
-    color: rgb(0, 0, 0);
+  text-decoration: none;
+  color: rgb(0, 0, 0);
 }
 
 #postbody {
-    text-align: left;
-    font-family: 'YaHei Consolas Hybrid', Consolas, 'Meiryo UI';
-    font-size: 14px;
+  text-align: left;
+  font-family: "YaHei Consolas Hybrid", Consolas, "Meiryo UI";
+  font-size: 14px;
 }
 
 footer {
-    display: flex;
-    align-items: center;
-    text-align: start;
+  display: flex;
+  align-items: center;
+  text-align: start;
 }
 
 footer .actions {
-    flex-grow: 1;
-    list-style: none;
-    cursor: default;
-    padding-left: 0;
+  flex-grow: 1;
+  list-style: none;
+  cursor: default;
+  padding-left: 0;
 }
 
 ul.actions li:last-child {
-    padding-right: 0;
+  padding-right: 0;
 }
 
 ul.actions li {
-    display: inline-block;
-    padding: 0 1.5em 0 0 ;
-    vertical-align: middle;
+  display: inline-block;
+  padding: 0 1.5em 0 0;
+  vertical-align: middle;
 }
 
 .stats {
-    opacity: .7;
-    cursor: default;
-    list-style: none;
-    padding: 0;
-    color: rgb(100, 100, 100);
+  opacity: 0.7;
+  cursor: default;
+  list-style: none;
+  padding: 0;
+  color: rgb(100, 100, 100);
 }
 
 .stats li {
-    display: inline-block;
-    font-size: .6em;
-    font-weight: 400;
-    line-height: 1;
-    margin: 0 0 0 2em;
-    padding: 0 0 0 2em;
-    border-left: solid 1px rgba(160, 160, 160, .3);
-    padding-left: 2em;
+  display: inline-block;
+  font-size: 0.6em;
+  font-weight: 400;
+  line-height: 1;
+  margin: 0 0 0 2em;
+  padding: 0 0 0 2em;
+  border-left: solid 1px rgba(160, 160, 160, 0.3);
+  padding-left: 2em;
 }
 
 .stats li:first-child {
-    border-left: 0;
-    margin-left: 0;
-    padding-left: 0;
+  border-left: 0;
+  margin-left: 0;
+  padding-left: 0;
 }
 
 .stats li a:first-child {
-    border-bottom: dotted 1px rgba(160, 160, 160, .65);
-    color: inherit;
+  border-bottom: dotted 1px rgba(160, 160, 160, 0.65);
+  color: inherit;
 }
 
 a.icon {
-    position: relative;
-    border-bottom: 0;
-    color: inherit;
+  position: relative;
+  border-bottom: 0;
+  color: inherit;
 }
 
 .icon:before {
-    margin-right: .75em;
-    color: rgba(160, 160, 160, .3);
+  margin-right: 0.75em;
+  color: rgba(160, 160, 160, 0.3);
 }
-
 </style>
