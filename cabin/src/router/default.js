@@ -7,6 +7,8 @@ const BlogSummary = resolve => require(['@/components/Summary'], resolve)
 const BlogArticle = resolve => require(['@/components/Article'], resolve)
 const BlogAbout = resolve => require(['@/components/About'], resolve)
 const BlogCategory = resolve => require(['@/components/Category'], resolve)
+// Login
+const Login = resolve => require(['@/views/Login'], resolve)
 
 export default new Router({
   routes: [
@@ -17,7 +19,10 @@ export default new Router({
         {
           path: '',
           name: "blogIndex",
-          component: BlogSummary
+          component: BlogSummary,
+          meta: {
+            privilege: 1
+          }
         },
         {
           path: 'article/:id', 
@@ -38,6 +43,19 @@ export default new Router({
           component: BlogCategory
         }
       ]
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: Login
+    },
+    {
+      path: "/user",
+      name: "user"
+    },
+    {
+      path: "/error",
+      name: "error"
     }
   ]
 })

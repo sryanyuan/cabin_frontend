@@ -4,7 +4,7 @@
     <router-link :to="{path: '/'}">GoCode</router-link>
   </h2>
   <nav class="links">
-    <ul>
+    <ul class="left-menu">
       <li>
         <router-link :to="{name: 'blogIndex'}">博客</router-link>
       </li>
@@ -13,45 +13,97 @@
       </li>
     </ul>
   </nav>
-  <nav class="main">
-    <ul>
-      <li><a href="/#/login">登陆</a></li>
+  <div class="main">
+    <ul class="right-menu" v-show="showLogin">
+      <li><a href="/#/login">登录</a></li>
     </ul>
-  </nav>
+    <ul class="right-menu" v-show="!showLogin" @mouseenter="onShowPanel" @mouseleave="onHidePanel">
+      <!--li><a href="/#/u">{{getUsername}}</a></li-->
+      <li>
+        <router-link :to="{name: 'user', params: {user: getUsername}}" >
+          <img  id="user-image" :src="getUserAvatar">
+        </router-link>
+      </li>
+      <li v-show="showPanel">
+        <div id="userpanel">
+          <div id="usercard">
+            <div id="userinfo">
+              <img :src="getUserAvatar" >
+              <div id="userctrls">
+                <router-link :to="{name: 'user', params: {user: getUsername}}" >{{getUsername}}</router-link>
+              </div>
+            </div>
+            <div id="userlogout">
+              <a @click="doLogout">安全退出</a>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
 </header>
 </template>
 
 <script>
-// 实现导航条的自动显示
 import Headroom from 'headroom.js'
 import { unique } from '@/assets/js/util.js';
-import axios from 'axios'
+import api from '@/assets/js/api.js'
+import store from '@/assets/js/store.js'
+
 export default {
   data () {
     return {
       tags: [],
-      activeIndex: "1"
+      activeIndex: "1",
+      user: {},
+      showPanel: false
     }
   },
   methods: {
-    getTags () {
-      axios.get("/api/articleTags").then((result)=>{
-        let res = result.data
-        if (res.status == '0') {
-          this.tags = res.result
-          this.tags = unique(this.tags)
-          this.$emit('shareTags', this.tags)
+    onShowPanel() {
+      this.showPanel = true
+    },
+    onHidePanel() {
+      this.showPanel = false
+    },
+    doLogout() {
+      let self = this
+      api.postLogout(function(res) {
+        if (res.success) {
+          store.commit({
+                type: "resetUser"
+            })
+          self.$message("您已安全退出")
         } else {
-          this.tags = ["未获取到数据"]
+          self.$message.warning(res.error)
         }
       })
+    }
+  },
+  computed: {
+    showLogin() {
+      let user = this.$store.state.userInfo
+      if (user.uid == null || 0 == user.uid) {
+        return true
+      }
+      return false
     },
-    getOne (tag) {
-      this.$emit('shareOne', tag)
-      this.$router.push({path:'/blogIndex'})
+    getUsername() {
+      let user = this.$store.state.userInfo
+      return user.username
+    },
+    getUserAvatar() {
+      let user = this.$store.state.userInfo
+      if ("" == user.avatar) {
+        return "static/image/my.png"
+      }
+      return "static/image/" + user.avatar + ".png"
     }
   },
   mounted () {
+  },
+  created() {
+    
   }
 }
 </script>
@@ -82,10 +134,16 @@ export default {
   padding-left: 1.5em;
 }
 
-#header ul {
+#header ul.left-menu, ul.right-menu {
   margin: 0;
   padding-left: 0;
   list-style: none;
+}
+
+#header ul.right-menu {
+  margin-right: 32px;
+  width: 40px;
+  text-align: right;
 }
 
 #header .links ul {
@@ -96,13 +154,51 @@ export default {
   text-align: right;
 }
 
-#header ul li {
+#header ul.left-menu li {
   display: inline-block;
 }
 
 #header .links, #header .links ul li {
   border-left: solid 1px rgba(160, 160, 160, .3);
   line-height: 56px;
+}
+
+#userpanel {
+  width: 300px;
+  background: white;
+  margin-left: -250px;
+  /*right: 0;
+  position: absolute;*/
+  box-shadow: 0 8px 16px 0 rgba(7, 17, 27, .2);
+  border-radius: 8px;
+}
+
+#usercard {
+  padding: 24px;
+  text-align: left;
+}
+
+#userinfo {
+  display: flex;
+  flex-direction: row;
+}
+
+#userctrls {
+  margin-left: 20px;
+}
+
+#userinfo>img {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+
+#user-image {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #4d5559;
+  border-radius: 50%;
 }
 
 #header h2 {
@@ -121,7 +217,7 @@ export default {
   font-size: 16px;
 }
 
-#header h2 a, #header li a {
+#header h2 a, #header .left-menu li a, .right-menu>li>a {
   font-size: 12px;
   border-bottom: 0;
   text-decoration: none;
@@ -131,6 +227,14 @@ export default {
   font-weight: 800;
   letter-spacing: 4px;
   margin-top: 0px;
+}
+
+.right-menu>li>a {
+  letter-spacing: 4px;
+}
+
+.right-menu>li {
+  width: 100%;
 }
 
 #header .links ul li a, #header .main ul li a {
@@ -164,6 +268,29 @@ a:hover {
 
 a:hover:before {
   color: #2ebaae !important;
+}
+
+#userinfo>a {
+  color: #93999f;
+  font: 14px;
+  line-height: 21px;
+}
+
+#userlogout {
+  height: 30px;
+}
+
+#userlogout>a, #userctrls>a {
+  font-size: 12px;
+  border-bottom: 0;
+  text-decoration: none;
+  color: #93999f;
+  font-family: "微软雅黑", "宋体",sans-serif;
+  margin-top: 0px;
+}
+
+#userlogout>a {
+  cursor: pointer;
 }
 
 </style>

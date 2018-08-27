@@ -54,4 +54,7 @@ Vue.use(Router)
 import router from '@/router/default.js'
 //import router from '@/router/nx.js'
 
+import interceptor from '@/router/interceptor.js'
+interceptor.beforeEach(router)
+
 export default router

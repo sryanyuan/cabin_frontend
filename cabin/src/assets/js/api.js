@@ -107,5 +107,42 @@ export default {
           captcha: "zzzz"
       }
       callback(successResult(res))
+  },
+  getLoginCaptcha(callback) {
+    axios.get("/api/login/captcha")
+    .then(function(response) {
+      callback(successResult(JSON.parse(response.data.message)))
+    })
+    .catch(function(error) {
+      callback(errorResult(formatError(error)));
+    })
+  },
+  getLoginStatus(callback) {
+    axios.get("/api/login/status")
+    .then(function(response) {
+      let status = JSON.parse(response.data.message)
+      callback(successResult(status))
+    })
+    .catch(function(error) {
+      callback(errorResult(formatError(error)));
+    })
+  },
+  postLogin(callback, ld) {
+    axios.post("/api/login", ld)
+    .then(function(response) {
+      callback(successResult())
+    })
+    .catch(function(error) {
+      callback(errorResult(formatError(error)));
+    })
+  },
+  postLogout(callback) {
+    axios.post("/api/logout")
+    .then(function(response) {
+      callback(successResult())
+    })
+    .catch(function(error) {
+      callback(errorResult(formatError(error)));
+    })
   }
 };

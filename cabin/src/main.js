@@ -33,9 +33,13 @@ Vue.directive('highlight', function (el) {
   })
 })
 
+// Vuex
+import store from '@/assets/js/store.js'
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   components: { App },
   template: '<App/>'
