@@ -1,5 +1,6 @@
 import { formatError } from "@/assets/js/util.js";
 import axios from "axios";
+import store from '@/assets/js/store.js'
 
 function wrapResult(success, res, error) {
   return {
@@ -140,6 +141,83 @@ export default {
     axios.post("/api/logout")
     .then(function(response) {
       callback(successResult())
+    })
+    .catch(function(error) {
+      callback(errorResult(formatError(error)));
+    })
+  },
+  postComment(callback, uri, content, parentId, toUser, captchaId, solution) {
+    // Get user first
+    let user = store.state.userInfo
+    if (user.uid == 0) {
+      callback(errorResult("请先登录"))
+      return
+    }
+    let args = {
+      uri: uri,
+      content: content,
+      subRefId: parentId,
+      toUser: toUser,
+      captchaId: captchaId,
+      solution: solution
+    }
+    console.log(args)
+    let url = ""
+    if (uri.indexOf("article:") == 0) {
+      url = "/api/article/" + uri.split(":")[1] + "/comment"
+    }
+    if ("" == url) {
+      callback(errorResult("无效的评论页面"))
+      return
+    }
+    axios.post(url, args)
+      .then(function(response) {
+        callback(successResult())
+      })
+      .catch(function(error) {
+        callback(errorResult(formatError(error)));
+      })
+  },
+  getComments(callback, uri) {
+    let url = ""
+    if (uri.indexOf("article:") == 0) {
+      url = "/api/article/" + uri.split(":")[1] + "/comment"
+    }
+    if ("" == url) {
+      callback(errorResult("无效的评论页面"))
+      return
+    }
+    axios.get(url)
+    .then(function(response) {
+      let comments = JSON.parse(response.data.message)
+      callback(successResult(comments))
+    })
+    .catch(function(error) {
+      callback(errorResult(formatError(error)));
+    })
+  },
+  getComment(callback, uri, commentId) {
+    let url = ""
+    if (uri.indexOf("article:") == 0) {
+      url = "/api/article/" + uri.split(":")[1] + "/comment/" + commentId
+    }
+    if ("" == url) {
+      callback(errorResult("无效的评论页面"))
+      return
+    }
+    axios.get(url)
+    .then(function(response) {
+      let comments = JSON.parse(response.data.message)
+      callback(successResult(comments))
+    })
+    .catch(function(error) {
+      callback(errorResult(formatError(error)));
+    })
+  },
+  deleteComment(callback, commentId) {
+    axios.delete("/api/comment/" + commentId)
+    .then(function(response) {
+      callback(successResult(null))
     })
     .catch(function(error) {
       callback(errorResult(formatError(error)));

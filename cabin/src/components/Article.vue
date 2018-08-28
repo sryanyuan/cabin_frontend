@@ -1,7 +1,7 @@
 <template>
     <div>
         <article-container :summary="summary" :key="articleId" :articleId="articleId"></article-container>
-        <comments :toWho="toWho"></comments>
+        <comments :toWho="toWho" :uri="commentURI"></comments>
     </div>
 </template>
 
@@ -17,6 +17,11 @@ export default {
             summary: false,
             article: {},
             toWho: {}
+        }
+    },
+    computed: {
+        commentURI() {
+            return "article:" + this.articleId
         }
     },
     components: {

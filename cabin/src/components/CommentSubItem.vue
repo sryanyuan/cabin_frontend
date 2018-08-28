@@ -28,6 +28,10 @@
 </template>
 
 <script>
+import api from '@/assets/js/api.js'
+import store from '@/assets/js/store.js'
+import privilege from '@/assets/js/privilege.js'
+
 export default {
     data: function() {
         return {
@@ -42,12 +46,21 @@ export default {
             if (null == this.reply.toUid) {
                 return false
             }
+            if (this.reply.uid == this.reply.toUid) {
+                return false
+            }
             return this.reply.toUid != 0
         }
     },
     methods: {
         doReply: function() {
             this.$emit('replyTo', this.reply.uid, this.reply.name)
+        },
+        isAdmin() {
+            if (store.state.userInfo.role >= privilege.superAdmin) {
+                return true;
+            }
+            return false;
         }
     },
     props: ["reply", "floorIndex"]
