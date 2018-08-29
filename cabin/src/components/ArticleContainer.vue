@@ -20,6 +20,10 @@
                 <p>Read</p>
             </div>
         </header>
+        <div v-show="showCtrl" id="post-ctrls">
+            <span class="sub-expand" @click="editArticle">编辑文章</span>
+            <span class="sub-expand" @click="deleteArticle">删除文章</span>
+        </div>
         <div id="postbody" v-html="article.content" v-highlight>
         </div>
         <footer v-if="summary">
@@ -42,6 +46,9 @@
 <script>
 import { formatError } from "@/assets/js/util.js";
 import api from "@/assets/js/api.js";
+import store from '@/assets/js/store.js'
+import privilege from '@/assets/js/privilege.js'
+import eventbus from '@/assets/js/eventbus.js'
 
 export default {
     data: function() {
@@ -58,8 +65,45 @@ export default {
         };
     },
     props: ["articleId", "summary"],
-    computed: {},
+    computed: {
+        showCtrl() {
+            if (this.summary) {
+                return false
+            }
+            if (store.state.userInfo.role >= privilege.superAdmin) {
+                return true;
+            }
+            return false;
+        }
+    },
     methods: {
+        deleteArticle() {
+            let self = this;
+            this.$confirm("是否删除文章？", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            })
+            .then(() => {
+                self.doDeleteArticle();
+            })
+            .catch(() => {});
+        },
+        editArticle() {
+            this.$router.push({name: "blogArticleEditor", params: {id: this.articleId}})
+        },
+        doDeleteArticle() {
+            let self = this
+            api.deleteArticle(function(response) {
+                if (!response.success) {
+                    self.$message.warning(response.error)
+                } else {
+                    eventbus.bus.$emit(eventbus.eventUpdateCategories)
+                    self.$message.success("删除成功")
+                    self.$router.back()
+                }
+            }, this.articleId)
+        },
         pullArticle() {
             this.article = {
                 title: "",
@@ -93,6 +137,13 @@ export default {
 </script>
 
 <style scoped>
+#post-ctrls {
+    text-align: left;
+    border-bottom: solid 1px rgba(160, 160, 160, 0.3);
+    margin-left: -3em;
+    padding-left: 20px;
+}
+
 .post {
     margin: 0 0 2em;
     padding: 3em 3em 1em;
@@ -114,7 +165,7 @@ header {
     display: flex;
     border-bottom: solid 1px rgba(160, 160, 160, 0.3);
     left: -3em;
-    margin: -3em 0 3em;
+    margin: -3em 0 0em;
     position: relative;
     width: calc(100% + 6em);
 }
@@ -182,6 +233,7 @@ header .meta .published {
     text-align: left;
     font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
     font-size: 14px;
+    margin-top: 3em;
 }
 
 footer {
@@ -246,5 +298,19 @@ a.icon {
 .icon:before {
     margin-right: 0.75em;
     color: rgba(160, 160, 160, 0.3);
+}
+
+.sub-expand {
+  margin-left: 8px;
+  margin-right: 24px;
+  font-size: 12px;
+  color: #93999f;
+  line-height: 32px;
+  cursor: pointer;
+}
+
+.sub-expand:hover {
+  color: black;
+  transition: all 0.5s;
 }
 </style>

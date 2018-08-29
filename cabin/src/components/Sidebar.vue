@@ -54,8 +54,10 @@ import SidebarRecentPostItem from "@/components/sidebarRecentPostItem.vue"
 import SidebarCategoryItem from "@/components/sidebarCategoryItem.vue"
 import {formatError} from '@/assets/js/util.js'
 import api from '@/assets/js/api.js'
+import eventbus from '@/assets/js/eventbus.js'
 
 export default {
+    name: "Sidebar",
     data: function() {
         return {
             logoImg: "static/image/my.png",
@@ -94,6 +96,10 @@ export default {
     },
     created: function() {
         this.pullCategories()
+        eventbus.bus.$on(eventbus.eventUpdateCategories, this.pullCategories)
+    },
+    beforeDestroy() {
+        eventbus.bus.$off(eventbus.eventUpdateCategories, this.pullCategories)
     }
 }
 </script>

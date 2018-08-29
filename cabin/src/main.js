@@ -36,6 +36,11 @@ Vue.directive('highlight', function (el) {
 // Vuex
 import store from '@/assets/js/store.js'
 
+// Mavon-editor
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+Vue.use(mavonEditor)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

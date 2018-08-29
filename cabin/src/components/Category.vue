@@ -58,7 +58,6 @@ export default {
                         self.totalPage = res.res.totalPage;
                         self.loaded = true;
                         window.scrollTo(0, 0);
-                        console.log(self.articles);
                     } else {
                         self.$message.warning(res.error);
                     }
@@ -88,7 +87,6 @@ export default {
     },
     watch: {
         $route(to, from) {
-            console.log(to, from);
             if (to.name != "blogCategory" || from.name != "blogCategory") {
                 return;
             }

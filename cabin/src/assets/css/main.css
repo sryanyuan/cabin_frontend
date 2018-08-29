@@ -121,7 +121,7 @@ input[type="submit"]:hover,
         flex-grow: 1;
         width: 100%;
         display: block;
-        max-width: 800px;
+        max-width: 900px;
       }
       
       #wrapper {

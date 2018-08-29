@@ -21,8 +21,10 @@ function errorResult(error) {
 function onApiFailed(error, callback) {
   let nerr = errorResult(formatError(error))
   if (typeof(nerr.error) == "object") {
-    if (nerr.login) {
+    if (nerr.error.login) {
       router.push({name: "login"})
+    } else {
+      callback(JSON.stringify(nerr))
     }
   } else {
     callback(nerr)
@@ -57,8 +59,11 @@ export default {
         onApiFailed(error, callback)
       });
   },
-  getArticle(callback, articleId, summary) {
+  getArticle(callback, articleId, summary, mk) {
     let url = "/api/article/" + articleId + "?summary=" + summary;
+    if (mk != null) {
+      url += "&mk=1"
+    }
 
     axios
       .get(url)
@@ -80,6 +85,35 @@ export default {
       .catch(function(error) {
         onApiFailed(error, callback)
       });
+  },
+  putArticle(callback, articleId, content, title) {
+    let url = "/api/article/" + articleId
+    axios.put(url, {articleId: articleId, content: content, title: title})
+    .then(function(response) {
+      callback(successResult(null))
+    })
+    .catch(function(error) {
+      onApiFailed(error, callback)
+    })
+  },
+  postArticle(callback, categoryId, title, content) {
+    axios.post("/api/article", {category: categoryId, title: title, content: content})
+    .then(function(response) {
+      let body = JSON.parse(response.data.message);
+      callback(successResult(body))
+    })
+    .catch(function(error) {
+      onApiFailed(error, callback)
+    })
+  },
+  deleteArticle(callback, articleId) {
+    axios.delete("/api/article/" + articleId)
+    .then(function(response) {
+      callback(successResult(null))
+    })
+    .catch(function(error) {
+      onApiFailed(error, callback)
+    })
   },
   getArticleIds(callback, category, mode, page, limit) {
     axios
@@ -186,7 +220,6 @@ export default {
       captchaId: captchaId,
       solution: solution
     }
-    console.log(args)
     let url = ""
     if (uri.indexOf("article:") == 0) {
       url = "/api/article/" + uri.split(":")[1] + "/comment"

@@ -8,6 +8,9 @@
       <li>
         <router-link :to="{name: 'blogIndex'}">博客</router-link>
       </li>
+      <li v-if="isAdmin">
+        <router-link :to="{name: 'blogArticleSubmit'}">写文</router-link>
+      </li>
       <li>
         <router-link :to="{name: 'blogAbout'}">关于</router-link>
       </li>
@@ -50,6 +53,7 @@ import Headroom from 'headroom.js'
 import { unique } from '@/assets/js/util.js';
 import api from '@/assets/js/api.js'
 import store from '@/assets/js/store.js'
+import privilege from '@/assets/js/privilege.js'
 
 export default {
   data () {
@@ -99,6 +103,12 @@ export default {
         return "static/image/my.png"
       }
       return "static/image/" + user.avatar + ".png"
+    },
+    isAdmin() {
+      if (store.state.userInfo.role >= privilege.superAdmin) {
+        return true;
+      }
+      return false;
     }
   },
   mounted () {
@@ -121,7 +131,7 @@ export default {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1;
+  z-index: 2;
 }
 
 #header .main {
