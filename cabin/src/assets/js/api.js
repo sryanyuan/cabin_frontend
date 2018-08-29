@@ -280,5 +280,15 @@ export default {
     .catch(function(error) {
       onApiFailed(error, callback)
     })
+  },
+  postCategory(callback, name, desc) {
+    axios.post("/api/category", {name: name, desc: desc})
+    .then(function(response) {
+      let category = JSON.parse(response.data.message)
+      callback(successResult(category))
+    })
+    .catch(function(error) {
+      onApiFailed(error, callback)
+    })
   }
 };
