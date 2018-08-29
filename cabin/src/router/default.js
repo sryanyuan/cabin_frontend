@@ -9,6 +9,8 @@ const BlogAbout = resolve => require(['@/components/About'], resolve)
 const BlogCategory = resolve => require(['@/components/Category'], resolve)
 // Login
 const Login = resolve => require(['@/views/Login'], resolve)
+// Register
+const Register = resolve => require(['@/views/Register'], resolve)
 
 export default new Router({
   routes: [
@@ -48,6 +50,11 @@ export default new Router({
       path: "/login",
       name: "login",
       component: Login
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: Register
     },
     {
       path: "/user",

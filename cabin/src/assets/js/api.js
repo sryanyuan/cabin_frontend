@@ -18,7 +18,23 @@ function errorResult(error) {
   return wrapResult(false, null, error);
 }
 
+function onApiFailed(error, callback) {
+  let nerr = errorResult(formatError(error))
+  if (typeof(nerr.error) == "object") {
+    if (nerr.login) {
+      router.push({name: "login"})
+    }
+  } else {
+    callback(nerr)
+  }
+}
+
+let router = null
+
 export default {
+  initRouter(rt) {
+    router = rt
+  },
   getCategoryList(callback) {
     axios
       .get("/api/category")
@@ -27,7 +43,7 @@ export default {
         callback(successResult(body.categories));
       })
       .catch(function(error) {
-        callback(errorResult(formatError(error)));
+        onApiFailed(error, callback)
       });
   },
   getAbout(callback) {
@@ -38,7 +54,7 @@ export default {
         callback(successResult(body));
       })
       .catch(function(error) {
-        callback(errorResult(formatError(error)));
+        onApiFailed(error, callback)
       });
   },
   getArticle(callback, articleId, summary) {
@@ -62,7 +78,7 @@ export default {
         callback(successResult(res));
       })
       .catch(function(error) {
-        callback(errorResult(formatError(error)));
+        onApiFailed(error, callback)
       });
   },
   getArticleIds(callback, category, mode, page, limit) {
@@ -93,7 +109,7 @@ export default {
         callback(successResult(res))
       })
       .catch(function(error) {
-        callback(errorResult(formatError(error)));
+        onApiFailed(error, callback)
       });
   },
   getArticleIdsByCategory(callback, category, page, limit) {
@@ -115,7 +131,7 @@ export default {
       callback(successResult(JSON.parse(response.data.message)))
     })
     .catch(function(error) {
-      callback(errorResult(formatError(error)));
+      onApiFailed(error, callback)
     })
   },
   getLoginStatus(callback) {
@@ -125,7 +141,7 @@ export default {
       callback(successResult(status))
     })
     .catch(function(error) {
-      callback(errorResult(formatError(error)));
+      onApiFailed(error, callback)
     })
   },
   postLogin(callback, ld) {
@@ -134,7 +150,16 @@ export default {
       callback(successResult())
     })
     .catch(function(error) {
-      callback(errorResult(formatError(error)));
+      onApiFailed(error, callback)
+    })
+  },
+  postRegister(callback, ld) {
+    axios.post("/api/register", ld)
+    .then(function(response) {
+      callback(successResult())
+    })
+    .catch(function(error) {
+      onApiFailed(error, callback)
     })
   },
   postLogout(callback) {
@@ -143,7 +168,7 @@ export default {
       callback(successResult())
     })
     .catch(function(error) {
-      callback(errorResult(formatError(error)));
+      onApiFailed(error, callback)
     })
   },
   postComment(callback, uri, content, parentId, toUser, captchaId, solution) {
@@ -175,7 +200,7 @@ export default {
         callback(successResult())
       })
       .catch(function(error) {
-        callback(errorResult(formatError(error)));
+        onApiFailed(error, callback)
       })
   },
   getComments(callback, uri) {
@@ -193,7 +218,7 @@ export default {
       callback(successResult(comments))
     })
     .catch(function(error) {
-      callback(errorResult(formatError(error)));
+      onApiFailed(error, callback)
     })
   },
   getComment(callback, uri, commentId) {
@@ -211,7 +236,7 @@ export default {
       callback(successResult(comments))
     })
     .catch(function(error) {
-      callback(errorResult(formatError(error)));
+      onApiFailed(error, callback)
     })
   },
   deleteComment(callback, commentId) {
@@ -220,7 +245,7 @@ export default {
       callback(successResult(null))
     })
     .catch(function(error) {
-      callback(errorResult(formatError(error)));
+      onApiFailed(error, callback)
     })
   }
 };

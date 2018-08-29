@@ -57,4 +57,7 @@ import router from '@/router/default.js'
 import interceptor from '@/router/interceptor.js'
 interceptor.beforeEach(router)
 
+import api from '@/assets/js/api.js'
+api.initRouter(router)
+
 export default router

@@ -15,7 +15,8 @@
   </nav>
   <div class="main">
     <ul class="right-menu" v-show="showLogin">
-      <li><a href="/#/login">登录</a></li>
+      <!--li><a href="/#/login">登录</a></li-->
+      <li><router-link :to="{name: 'login'}" >登录</router-link></li>
     </ul>
     <ul class="right-menu" v-show="!showLogin" @mouseenter="onShowPanel" @mouseleave="onHidePanel">
       <!--li><a href="/#/u">{{getUsername}}</a></li-->
@@ -73,7 +74,7 @@ export default {
           store.commit({
                 type: "resetUser"
             })
-          self.$message("您已安全退出")
+          self.$message.success("您已安全退出")
         } else {
           self.$message.warning(res.error)
         }
