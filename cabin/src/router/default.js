@@ -1,5 +1,7 @@
 import Router from 'vue-router'
 
+import priv from '@/assets/js/privilege.js'
+
 // First version
 const Blog = resolve => require(['@/views/Blog'], resolve)
 // Blog child router components
@@ -24,9 +26,7 @@ export default new Router({
           path: '',
           name: "blogIndex",
           component: BlogSummary,
-          meta: {
-            privilege: 1
-          }
+          meta: {}
         },
         {
           path: 'article/:id', 
@@ -41,13 +41,17 @@ export default new Router({
           name: "blogArticleSubmit", 
           component: BlogArticleSubmit,
           meta: {
-            scrollToTop: true
+            scrollToTop: true,
+            privilege: priv.superAdmin
           }
         },
         {
           path: 'article/:id/editor',
           name: 'blogArticleEditor',
-          component: BlogArticleEditor
+          component: BlogArticleEditor,
+          meta: {
+            privilege: priv.superAdmin
+          }
         },
         {
           path: 'about', 
