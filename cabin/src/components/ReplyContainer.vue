@@ -36,7 +36,7 @@ export default {
     },
     computed: {
         getPlaceholder() {
-            if (null == this.toWho) {
+            if (null == this.toWho || null == this.toWho.name) {
                 return "请输入内容";
             }
             return "回复 " + this.toWho.name + ":";

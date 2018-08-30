@@ -12,6 +12,9 @@
         <router-link :to="{name: 'blogArticleSubmit'}">写文</router-link>
       </li>
       <li>
+        <router-link :to="{name: 'blogGuestbook'}">留言</router-link>
+      </li>
+      <li>
         <router-link :to="{name: 'blogAbout'}">关于</router-link>
       </li>
     </ul>

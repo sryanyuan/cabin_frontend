@@ -11,6 +11,7 @@ const BlogArticleSubmit = resolve => require(['@/components/ArticleSubmit'], res
 const BlogAbout = resolve => require(['@/components/About'], resolve)
 const BlogCategory = resolve => require(['@/components/Category'], resolve)
 const BlogArticleEditor = resolve => require(['@/components/ArticleEditor'], resolve)
+const BlogGuestbook = resolve => require(['@/components/Guestbook'], resolve)
 // Login
 const Login = resolve => require(['@/views/Login'], resolve)
 // Register
@@ -57,6 +58,11 @@ export default new Router({
           path: 'about', 
           name: "blogAbout", 
           component: BlogAbout
+        },
+        {
+          path: 'guestbook',
+          name: 'blogGuestbook',
+          component: BlogGuestbook
         },
         {
           path: 'category/:id', 

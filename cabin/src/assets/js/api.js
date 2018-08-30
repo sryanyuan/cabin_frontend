@@ -223,6 +223,8 @@ export default {
     let url = ""
     if (uri.indexOf("article:") == 0) {
       url = "/api/article/" + uri.split(":")[1] + "/comment"
+    } else if (uri == "guestbook") {
+      url = "/api/guestbook/comment"
     }
     if ("" == url) {
       callback(errorResult("无效的评论页面"))
@@ -240,6 +242,8 @@ export default {
     let url = ""
     if (uri.indexOf("article:") == 0) {
       url = "/api/article/" + uri.split(":")[1] + "/comment"
+    } else if (uri == "guestbook") {
+      url = "/api/guestbook/comment"
     }
     if ("" == url) {
       callback(errorResult("无效的评论页面"))
@@ -268,6 +272,8 @@ export default {
     let url = ""
     if (uri.indexOf("article:") == 0) {
       url = "/api/article/" + uri.split(":")[1] + "/comment/" + commentId
+    } else if (uri == "guestbook") {
+      url = "/api/guestbook/comment/" + commentId
     }
     if ("" == url) {
       callback(errorResult("无效的评论页面"))
@@ -333,6 +339,16 @@ export default {
     axios.get("/api/article/" + articleId + "/download")
     .then(function(response) {
       callback(successResult(null))
+    })
+    .catch(function(response) {
+      onApiFailed(error, callback)
+    })
+  },
+  getSuperAdmin(callback) {
+    axios.get("/api/superadmin")
+    .then(function(response) {
+      let res = JSON.parse(response.data.message)
+      callback(successResult(res))
     })
     .catch(function(response) {
       onApiFailed(error, callback)
