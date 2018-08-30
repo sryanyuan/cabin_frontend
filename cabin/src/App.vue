@@ -13,7 +13,7 @@ export default {
 <style scoped>
 
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Microsoft YaHei','宋体' , Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /*text-align: center;*/

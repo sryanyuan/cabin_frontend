@@ -1,0 +1,18 @@
+.codehl p code {
+    margin: 0 4px 0 5px;
+    font-family: "YaHei Consolas Hybrid",Consolas,"Meiryo UI","Malgun Gothic","Segoe UI","Trebuchet MS",Helvetica,monospace,monospace;
+    border: 1px solid #ddd;
+    background: #f6f6f6;
+    padding: 3px;
+    border-radius: 3px;
+    font-size: 14px;
+    color: #c7254e;
+}
+
+.codehl p {
+    line-height: 1.6;
+}
+
+.codehl code {
+    font-family: 'courier new',monospace;
+}

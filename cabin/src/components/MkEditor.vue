@@ -38,7 +38,7 @@ export default {
 .v-note-wrapper {
   z-index: 1;
   margin-top: 10px;
-  height: 500px;
+  height: 800px;
 }
 
 #editor-title {

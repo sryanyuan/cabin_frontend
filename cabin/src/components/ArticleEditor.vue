@@ -74,6 +74,7 @@ export default {
                 self.$message.warning(res.error)
             } else {
                 self.$message.success("保存成功")
+                self.$router.push({name: "blogArticle", params: {id: self.articleId}})
             }
         }, this.articleId, value, this.title)
     }

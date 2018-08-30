@@ -26,7 +26,7 @@
             <span class="sub-expand" @click="topArticle">{{topArticleText}}</span>
             <a class="sub-expand" :href="getArticleDownloadLink">下载文章</a>
         </div>
-        <div id="postbody" v-html="article.content" v-highlight>
+        <div id="postbody" v-html="article.content" v-highlight class="codehl">
         </div>
         <footer v-if="summary">
             <ul class="actions">

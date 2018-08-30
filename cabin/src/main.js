@@ -15,6 +15,7 @@ import axios from 'axios'
 
 // custom files
 import '@/assets/css/main.css'
+import '@/assets/css/codehl.css'
 //import '@/assets/css/media.css'
 
 Vue.config.productionTip = false
