@@ -254,6 +254,16 @@ export default {
       onApiFailed(error, callback)
     })
   },
+  getCommentsReview(callback) {
+    axios.get("/api/comments/review")
+    .then(function(response) {
+      let comments = JSON.parse(response.data.message)
+      callback(successResult(comments))
+    })
+    .catch(function(error) {
+      onApiFailed(error, callback)
+    })
+  },
   getComment(callback, uri, commentId) {
     let url = ""
     if (uri.indexOf("article:") == 0) {
@@ -276,6 +286,25 @@ export default {
     axios.delete("/api/comment/" + commentId)
     .then(function(response) {
       callback(successResult(null))
+    })
+    .catch(function(error) {
+      onApiFailed(error, callback)
+    })
+  },
+  putCommentReview(callback, commentId) {
+    axios.put("/api/comment/" + commentId + "/review")
+    .then(function(response) {
+      callback(successResult(null))
+    })
+    .catch(function(error) {
+      onApiFailed(error, callback)
+    })
+  },
+  getCommentsReviewCount(callback) {
+    axios.get("/api/comments/review/count")
+    .then(function(response) {
+      let res = JSON.parse(response.data.message)
+      callback(successResult(res))
     })
     .catch(function(error) {
       onApiFailed(error, callback)

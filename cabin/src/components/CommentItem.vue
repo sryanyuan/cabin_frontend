@@ -154,7 +154,7 @@ export default {
 
 .sub-expand {
   margin-left: 8px;
-  margin-right: 24px;
+  margin-right: 0px;
   font-size: 12px;
   color: #93999f;
   line-height: 32px;

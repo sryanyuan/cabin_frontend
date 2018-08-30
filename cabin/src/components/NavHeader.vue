@@ -18,14 +18,12 @@
   </nav>
   <div class="main">
     <ul class="right-menu" v-show="showLogin">
-      <!--li><a href="/#/login">登录</a></li-->
       <li><router-link :to="{name: 'login'}" >登录</router-link></li>
     </ul>
     <ul class="right-menu" v-show="!showLogin" @mouseenter="onShowPanel" @mouseleave="onHidePanel">
-      <!--li><a href="/#/u">{{getUsername}}</a></li-->
       <li>
         <router-link :to="{name: 'user', params: {user: getUsername}}" >
-          <img  id="user-image" :src="getUserAvatar">
+          <img  id="user-image" :src="getUserAvatar" :class="userImageClass">
         </router-link>
       </li>
       <li v-show="showPanel">
@@ -35,6 +33,12 @@
               <img :src="getUserAvatar" >
               <div id="userctrls">
                 <router-link :to="{name: 'user', params: {user: getUsername}}" >{{getUsername}}</router-link>
+              </div>
+            </div>
+            <div id="user-buttons">
+              <div id="my-badge">
+                <span class="sub-expand" v-show="isAdmin" @click="showReviewComment">审核回复</span>
+                <sup v-show="showReviewTip" class="badge-value">{{reviewCount}}</sup>
               </div>
             </div>
             <div id="userlogout">
@@ -61,7 +65,11 @@ export default {
       tags: [],
       activeIndex: "1",
       user: {},
-      showPanel: false
+      showPanel: false,
+      reviewCount: 0,
+      userImageClass: {
+        'msg-tip': false
+      }
     }
   },
   methods: {
@@ -83,6 +91,16 @@ export default {
           self.$message.warning(res.error)
         }
       })
+    },
+    showReviewComment() {
+      this.$emit("showReview")
+      this.showPanel = false
+    },
+    decReviewTipCount() {
+      this.reviewCount--
+      if (this.reviewCount <= 0) {
+        this.userImageClass['msg-tip'] = false
+      }
     }
   },
   computed: {
@@ -109,12 +127,27 @@ export default {
         return true;
       }
       return false;
+    },
+    showReviewTip() {
+      return this.reviewCount > 0 && (store.state.userInfo.role >= privilege.superAdmin)
     }
   },
   mounted () {
   },
   created() {
-    
+    let self = this
+    if (store.state.userInfo.role >= privilege.superAdmin) {
+        api.getCommentsReviewCount(function(res) {
+        if (!res.success) {
+          self.$message.warning(res.error)
+        } else {
+          self.reviewCount = res.res.count
+          if (self.reviewCount > 0) {
+            self.userImageClass['msg-tip'] = true
+          }
+        }
+      })
+    }
   }
 }
 </script>
@@ -154,7 +187,7 @@ export default {
 #header ul.right-menu {
   margin-right: 32px;
   width: 40px;
-  text-align: right;
+  text-align: center;
 }
 
 #header .links ul {
@@ -162,7 +195,7 @@ export default {
 }
 
 #header .main ul {
-  text-align: right;
+  /*text-align: right;*/
 }
 
 #header ul.left-menu li {
@@ -176,6 +209,7 @@ export default {
 
 #userpanel {
   width: 300px;
+  height: auto;
   background: white;
   margin-left: -250px;
   /*right: 0;
@@ -208,8 +242,25 @@ export default {
 #user-image {
   width: 24px;
   height: 24px;
-  border: 2px solid #4d5559;
+  border: 2px solid #fff;
   border-radius: 50%;
+}
+
+@keyframes msg-tip-ani {
+  0% {
+    border: 2px solid #fff;
+  }
+  50% {
+    border: 2px solid #f56c6c;
+  }
+  100% {
+    border: 2px solid #fff;
+  }
+}
+
+.msg-tip {
+  border: 2px solid #f56c6c !important;
+  animation: msg-tip-ani 2s ease infinite;
 }
 
 #header h2 {
@@ -246,6 +297,7 @@ export default {
 
 .right-menu>li {
   width: 100%;
+  vertical-align: middle;
 }
 
 #header .links ul li a, #header .main ul li a {
@@ -288,7 +340,10 @@ a:hover:before {
 }
 
 #userlogout {
+  border-top: 1px solid #d9dde1;
   height: 30px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 #userlogout>a, #userctrls>a {
@@ -301,7 +356,58 @@ a:hover:before {
 }
 
 #userlogout>a {
+  padding-top: 10px;
   cursor: pointer;
+  line-height: normal;
+}
+
+.sub-expand {
+  margin-left: 8px;
+  margin-right: 0px;
+  font-size: 12px;
+  color: #93999f;
+  line-height: 32px;
+  cursor: pointer;
+  border: 1px solid rgba(160, 160, 160, 0.3);
+  border-radius: 8px;
+  padding: 0 8px 0 8px;
+}
+
+.sub-expand:hover {
+  color: black;
+  transition: all 0.5s;
+}
+
+#user-buttons, #userlogout {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+#my-badge {
+  position: relative;
+  margin-right: 40px;
+  vertical-align: middle;
+  display: inline-block;
+  line-height: normal;
+}
+
+.badge-value {
+  background-color: #f56c6c;
+  border-radius: 10px;
+  color: #fff;
+  display: inline-block;
+  font-size: 12px;
+  height: 18px;
+  padding: 0 6px;
+  text-align: center;
+  white-space: nowrap;
+  border: 1px solid #fff;
+  position: absolute;
+  top: 0px;
+  right: 10px;
+  transform: translateY(-50%) translateX(100%);
 }
 
 </style>

@@ -64,6 +64,7 @@ export default {
                 if (res.success) {
                     self.$emit("updateReply", self.subRefId)
                     self.input = ""
+                    self.$message.success("您的回复已提交，请等待审核")
                 } else {
                     self.$message.warning(res.error)
                 }
