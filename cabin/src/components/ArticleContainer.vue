@@ -23,6 +23,8 @@
         <div v-show="showCtrl" id="post-ctrls">
             <span class="sub-expand" @click="editArticle">编辑文章</span>
             <span class="sub-expand" @click="deleteArticle">删除文章</span>
+            <span class="sub-expand" @click="topArticle">{{topArticleText}}</span>
+            <a class="sub-expand" :href="getArticleDownloadLink">下载文章</a>
         </div>
         <div id="postbody" v-html="article.content" v-highlight>
         </div>
@@ -74,6 +76,16 @@ export default {
                 return true;
             }
             return false;
+        },
+        topArticleText() {
+            if (this.article.top) {
+                return "取消置顶"
+            } else {
+                return "置顶文章"
+            }
+        },
+        getArticleDownloadLink() {
+            return "/api/article/" + this.articleId + "/download"
         }
     },
     methods: {
@@ -91,6 +103,17 @@ export default {
         },
         editArticle() {
             this.$router.push({name: "blogArticleEditor", params: {id: this.articleId}})
+        },
+        topArticle() {
+            let self = this
+            api.putArticleTop(function(res) {
+                if (res.success) {
+                    self.article.top = !self.article.top
+                    self.$message.success(self.article.top ? "置顶成功" : "取消置顶成功")
+                } else {
+                    self.$message.warning(res.error)
+                }
+            }, this.articleId)
         },
         doDeleteArticle() {
             let self = this
@@ -141,6 +164,7 @@ export default {
     text-align: left;
     border-bottom: solid 1px rgba(160, 160, 160, 0.3);
     margin-left: -3em;
+    margin-right: -3em;
     padding-left: 20px;
 }
 

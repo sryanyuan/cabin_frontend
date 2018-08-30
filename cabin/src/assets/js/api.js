@@ -290,5 +290,23 @@ export default {
     .catch(function(error) {
       onApiFailed(error, callback)
     })
+  },
+  putArticleTop(callback, articleId) {
+    axios.put("/api/article/" + articleId + "/top")
+    .then(function(response) {
+      callback(successResult(null))
+    })
+    .catch(function(response) {
+      onApiFailed(error, callback)
+    })
+  },
+  getArticleDownload(callback, articleId) {
+    axios.get("/api/article/" + articleId + "/download")
+    .then(function(response) {
+      callback(successResult(null))
+    })
+    .catch(function(response) {
+      onApiFailed(error, callback)
+    })
   }
 };
