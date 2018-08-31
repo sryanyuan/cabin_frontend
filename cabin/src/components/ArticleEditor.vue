@@ -1,5 +1,5 @@
 <template>
-    <div id="editor-container">
+    <div id="editor-container" v-loading="loading">
         <div id="editor-title">
             <el-input id="input-title" v-model="title" placeholder="请输入标题"></el-input>
         </div>
@@ -17,12 +17,14 @@ export default {
       articleId: 0,
       showTitle: true,
       title: "",
-      mkcontent: ""
+      mkcontent: "",
+      loading: true
     };
   },
   mounted() {
       let self = this
     this.$nextTick(() => {
+        self.loading = true
         self.getArticleContent()
     })
   },
@@ -35,6 +37,7 @@ export default {
         // Pull content from article
         api.getArticle(
             function(res) {
+            self.loading = false
             if (res.success) {
                 self.title = res.res.title;
                 self.mkcontent = res.res.content;
@@ -63,6 +66,7 @@ export default {
         type: "warning"
       })
         .then(() => {
+          self.loading = true
           self.doCommit(value);
         })
         .catch(() => {});
@@ -70,6 +74,7 @@ export default {
     doCommit(value) {
         let self = this
         api.putArticle(function(res) {
+            self.loading = false
             if (!res.success) {
                 self.$message.warning(res.error)
             } else {
