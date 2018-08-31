@@ -1,7 +1,7 @@
 <template>
     <li>
         <article>
-            <header>
+            <header @mouseenter="onMouseEnter" @mouseleave="onMouseLeave">
                 <router-link :to="{name: 'blogCategory', params: {id: categoryId}, query: {page: 0}}">{{name}}</router-link>
                 <span v-show="showButtons" class="sub-expand" @click="editCategory">编辑</span>
                 <span style="float:right;">{{count}}</span>
@@ -29,15 +29,22 @@ export default {
             editCateName: "",
             editCateDesc: "",
             showEditor: false,
-            editorLoading: true
+            editorLoading: true,
+            mouseIn: false
         }
     },
     computed: {
         showButtons() {
-            return privcheck.isSuperAdmin()
+            return privcheck.isSuperAdmin() && this.mouseIn
         }
     },
     methods: {
+        onMouseEnter() {
+            this.mouseIn = true
+        },
+        onMouseLeave() {
+            this.mouseIn = false
+        },
         editReset() {
             this.editCateDesc = ""
             this.editCateName = ""
@@ -102,7 +109,7 @@ header {
   margin-right: 24px;
   font-size: 12px;
   color: #93999f;
-  line-height: 32px;
+  line-height: 16px;
   cursor: pointer;
 }
 
