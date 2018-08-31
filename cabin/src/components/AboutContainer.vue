@@ -1,12 +1,16 @@
 <template>
     <article class="post" v-loading="loading">
-        <div id="postbody" v-html="content" v-highlight>
+        <div v-show="showCtrl" id="post-ctrls">
+            <span class="sub-expand" @click="editResume">编辑简历</span>
+            <a class="sub-expand" href="/api/resume/download">下载简历</a>
         </div>
+        <div id="postbody" v-html="content" v-highlight class="codehl"></div>
     </article>
 </template>
 
 <script>
 import api from '@/assets/js/api.js'
+import privcheck from '@/assets/js/privcheck.js'
 
 export default {
     data: function () {
@@ -15,9 +19,16 @@ export default {
             content: ""
         };
     },
+    methods: {
+      editResume() {
+        this.$router.push({name: "blogResumeEditor"})
+      }
+    },
     props: [],
     computed: {
-        
+        showCtrl() {
+            return privcheck.isSuperAdmin()
+        },
     },
     created: function () {
         this.content = ""
@@ -119,5 +130,29 @@ a.icon {
 .icon:before {
   margin-right: 0.75em;
   color: rgba(160, 160, 160, 0.3);
+}
+
+#post-ctrls {
+    text-align: left;
+    border-bottom: solid 1px rgba(160, 160, 160, 0.3);
+    margin-left: -3em;
+    margin-right: -3em;
+    margin-top: -3em;
+    margin-bottom: 3em;
+    padding-left: 20px;
+}
+
+.sub-expand {
+  margin-left: 8px;
+  margin-right: 24px;
+  font-size: 12px;
+  color: #93999f;
+  line-height: 32px;
+  cursor: pointer;
+}
+
+.sub-expand:hover {
+  color: black;
+  transition: all 0.5s;
 }
 </style>

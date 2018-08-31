@@ -9,6 +9,7 @@ const BlogSummary = resolve => require(['@/components/Summary'], resolve)
 const BlogArticle = resolve => require(['@/components/Article'], resolve)
 const BlogArticleSubmit = resolve => require(['@/components/ArticleSubmit'], resolve)
 const BlogAbout = resolve => require(['@/components/About'], resolve)
+const BlogResumeEditor = resolve => require(['@/components/ResumeEditor'], resolve)
 const BlogCategory = resolve => require(['@/components/Category'], resolve)
 const BlogArticleEditor = resolve => require(['@/components/ArticleEditor'], resolve)
 const BlogGuestbook = resolve => require(['@/components/Guestbook'], resolve)
@@ -58,6 +59,11 @@ export default new Router({
           path: 'about', 
           name: "blogAbout", 
           component: BlogAbout
+        },
+        {
+          path: 'about/resume/editor', 
+          name: "blogResumeEditor", 
+          component: BlogResumeEditor
         },
         {
           path: 'guestbook',

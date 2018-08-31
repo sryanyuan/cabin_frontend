@@ -48,12 +48,26 @@ export default {
         onApiFailed(error, callback)
       });
   },
-  getAbout(callback) {
+  getAbout(callback, mk) {
+    let url = "/api/about"
+    if (null != mk) {
+      url += "?mk=1"
+    }
     axios
-      .get("/api/about")
+      .get(url)
       .then(function(response) {
         let body = JSON.parse(response.data.message);
         callback(successResult(body));
+      })
+      .catch(function(error) {
+        onApiFailed(error, callback)
+      });
+  },
+  putAboutResume(callback, content) {
+    axios
+      .put("/api/about/resume", {content: content})
+      .then(function(response) {
+        callback(successResult(null));
       })
       .catch(function(error) {
         onApiFailed(error, callback)
@@ -321,6 +335,25 @@ export default {
     .then(function(response) {
       let category = JSON.parse(response.data.message)
       callback(successResult(category))
+    })
+    .catch(function(error) {
+      onApiFailed(error, callback)
+    })
+  },
+  getCategory(callback, categoryId) {
+    axios.get("/api/category/" + categoryId)
+    .then(function(response) {
+      let category = JSON.parse(response.data.message)
+      callback(successResult(category))
+    })
+    .catch(function(error) {
+      onApiFailed(error, callback)
+    })
+  },
+  putCategory(callback, categoryId, name, desc) {
+    axios.put("/api/category/" + categoryId, {name: name, desc: desc})
+    .then(function(response) {
+      callback(successResult(null))
     })
     .catch(function(error) {
       onApiFailed(error, callback)

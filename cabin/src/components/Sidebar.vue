@@ -31,7 +31,8 @@
                         分一下类
                     </h3>
                 </header>
-                <sidebar-category-item v-for="cate in categories" :categoryId="cate.id" :name="cate.name" :count="cate.count" :key="cate.id" />
+                <sidebar-category-item v-for="cate in categories" :categoryId="cate.id" :name="cate.name" :count="cate.count" :key="cate.id"
+                @categoryNameChanged="onCateNameChanged" />
             </ul>
         </section>
         <section class="blurb">
@@ -92,6 +93,15 @@ export default {
                     self.$message.warning(response.error)
                 }
             })
+        },
+        onCateNameChanged(id, name) {
+            for (let cate of this.categories) {
+                console.log(cate)
+                if (cate.id == id) {
+                    cate.name = name
+                    return
+                }
+            }
         }
     },
     created: function() {
