@@ -1,4 +1,4 @@
-.codehl p code {
+.codehl p code, .codehl li code {
     margin: 0 4px 0 5px;
     font-family: "YaHei Consolas Hybrid",Consolas,"Meiryo UI","Malgun Gothic","Segoe UI","Trebuchet MS",Helvetica,monospace,monospace;
     border: 1px solid #ddd;
